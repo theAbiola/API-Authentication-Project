@@ -1,17 +1,19 @@
 import express from "express";
 import axios from "axios";
+import env from "dotenv";
 
 const app = express();
 const port = 3000;
-const API_URL = "https://secrets-api.appbrewery.com";
+env.config();
+const API_URL = process.env.SECRETS_API_URL;
 
-const yourUsername = `${usernameGoesHere}`;
-const yourPassword = `${passwordGoesHere}`;
-const yourAPIKey = `${apiKeyGoesHere}`;
-const yourBearerToken = `${bearerTokenGoesHere}`;
+const ourUsername = process.env.SECRETS_API_USERNAME;
+const ourPassword = process.env.SECRETS_API_PASSWORD;
+const ourAPIKey = process.env.SECRETS_API_KEY;
+const ourBearerToken = process.env.SECRETS_API_BEARER_TOKEN;
 
 app.get("/", (req, res) => {
-  res.render("index.ejs", { content: "API Response." });
+  res.render("index.ejs", { content: "API Response..." });
 });
 
 app.get("/noAuth", async (req, res) => {
@@ -22,30 +24,29 @@ app.get("/noAuth", async (req, res) => {
     const response = await axios.get(`${API_URL}/random`);
     const result = response.data;
     let stringResult = JSON.stringify(result);
-    res.render("index.ejs", {content: stringResult});
+    res.render("index.ejs", { content: stringResult });
   } catch (error) {
     console.error(error.message);
   }
-
 });
 
 app.get("/basicAuth", async (req, res) => {
   //To demonstrate Basic Auth, We hit up the /all endpoint
   //We use a query parameter to specify that we only want the secrets from page 2
 
-    try {
-      const response = await axios.get(`${API_URL}/all?page=2`, {
-        auth: {
-        username: yourUsername,
-        password: yourPassword,
-      }
+  try {
+    const response = await axios.get(`${API_URL}/all?page=2`, {
+      auth: {
+        username: ourUsername,
+        password: ourPassword,
+      },
     });
-      const result = response.data;
-      let stringResult = JSON.stringify(result);
-      res.render("index.ejs", {content: stringResult});
-    } catch (error) {
-      console.error(error.message);
-    }
+    const result = response.data;
+    let stringResult = JSON.stringify(result);
+    res.render("index.ejs", { content: stringResult });
+  } catch (error) {
+    console.error(error.message);
+  }
 });
 
 app.get("/apiKey", async (req, res) => {
@@ -54,10 +55,12 @@ app.get("/apiKey", async (req, res) => {
   //We also ensure to provide a query parameter of apiKey in the request.
 
   try {
-    const response = await axios.get(`${API_URL}/filter?score=5&apiKey=${yourAPIKey}`);
+    const response = await axios.get(
+      `${API_URL}/filter?score=5&apiKey=${ourAPIKey}`
+    );
     const result = response.data;
     let stringResult = JSON.stringify(result);
-    res.render("index.ejs", {content: stringResult});
+    res.render("index.ejs", { content: stringResult });
   } catch (error) {
     console.error(error.message);
   }
@@ -69,13 +72,13 @@ app.get("/bearerToken", async (req, res) => {
 
   try {
     const response = await axios.get(`${API_URL}/secrets/42`, {
-      headers: { 
-        Authorization: `Bearer ${yourBearerToken}` 
-      }
+      headers: {
+        Authorization: `Bearer ${ourBearerToken}`,
+      },
     });
     const result = response.data;
     let stringResult = JSON.stringify(result);
-    res.render("index.ejs", {content: stringResult});
+    res.render("index.ejs", { content: stringResult });
   } catch (error) {
     console.error(error.message);
   }
