@@ -81,4 +81,4 @@ const getBearerTokenAuth = async (req, res) => {
     }
 }
 
-export { getHomePage, getBasicAuth, getApiKeyAuth, getBearerTokenAuth }
+export { getHomePage, getNoAuth, getBasicAuth, getApiKeyAuth, getBearerTokenAuth }
