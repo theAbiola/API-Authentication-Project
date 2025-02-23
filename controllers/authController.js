@@ -1,4 +1,5 @@
 import env from "dotenv";
+import axios from "axios";
 env.config();
 
 const API_URL = process.env.SECRETS_API_URL;
@@ -79,3 +80,5 @@ const getBearerTokenAuth = async (req, res) => {
         console.error(error.message);
     }
 }
+
+export { getHomePage, getBasicAuth, getApiKeyAuth, getBearerTokenAuth }
