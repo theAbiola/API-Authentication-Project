@@ -16,7 +16,7 @@ const getHomePage = (req, res) => {
 const getNoAuth = async (req, res) => {
     //We use axios to hit up the /random endpoint
     //The data we get back should be sent to the ejs file as "content"
-    //We also use JSON.stringify to turn the JS object from axios into a string.
+    //We also use JSON.stringify to turn the JS object from axios into a JSON string.
     try {
         const response = await axios.get(`${API_URL}/random`);
         const result = response.data;
